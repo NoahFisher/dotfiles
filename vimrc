@@ -9,27 +9,36 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+" ----------------------------------------------------------------------------
+" Plugins
+" ----------------------------------------------------------------------------
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" Keep Plugin commands between vundle#begin/end.
+Plugin 'airblade/vim-gitgutter'
+Plugin 'itchyny/lightline.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
-Plugin 'junegunn/fzf'
+Plugin 'tpope/vim-pathogen'
 Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-rake'
-Plugin "tomtom/tcomment_vim.git"
-Plugin "christoomey/vim-tmux-navigator"
-Plugin "christoomey/vim-tmux-navigator"
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-rhubarb'
+Plugin 'tpope/vim-sleuth'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
 
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 
-" All of your Plugins must be added before the following line
+" All of your Plugins must be added before the following line 
 call vundle#end()            " required
 filetype plugin indent on    " required
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 " ----------------------------------------------------------------------------
 " KEY MAPS
@@ -49,7 +58,6 @@ nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 
-
 " ----------------------------------------------------------------------------
 " PLUGIN SETTINGS
 " ----------------------------------------------------------------------------
@@ -58,13 +66,15 @@ let mapleader = ","
 let maplocalleader = ","
 
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
-set rtp+=/usr/local/opt/fzf
+set rtp+=/home/dev/.linuxbrew/opt/fzf/install
 set rtp+=~/.fzf
-nmap ; :Buffers<CR>
 nmap <Leader>r :Tags<CR>
 nmap <Leader>t :Files<CR>
 nmap <Leader>a :Ag<CR>
 
+" rails.vim (Better key maps for switching between controller and view)
+nnoremap ,vv :Eview<cr>
+nnoremap ,cc :Econtroller<cr>
 
 " ----------------------------------------------------------------------------
 " OPTIONS
@@ -74,8 +84,6 @@ set autoread                " Don't bother me when a file changes
 set backspace=indent,eol,start
                             " Allow backspace beyond insertion point
 set cindent                 " Automatic program indenting
-set cinkeys-=0#             " Comments don't fiddle with indenting
-set cino=                   " See :h cinoptions-values
 set commentstring=\ \ #%s   " When folds are created, add them to this
 set copyindent              " Make autoindent use the same chars as prev line
 set directory-=.            " Don't store temp files in cwd
@@ -106,14 +114,13 @@ set matchtime=2             " Tenths of second to hilight matching paren
 set modelines=5             " How many lines of head & tail to look for ml's
 silent! set mouse=nvc       " Use the mouse, but not in insert mode
 set nobackup                " No backups left after done editing
-set relativenumber          " No line numbers to start
+set relativenumber          " Use Relative Line Numbers
 
 set nowritebackup           " No backups made while editing
 set printoptions=paper:letter " US paper
 set ruler                   " Show row/col and percentage
 set scroll=4                " Number of lines to scroll with ^U/^D
 set scrolloff=15            " Keep cursor away from this many chars top/bot
-set sessionoptions-=options " Don't save runtimepath in Vim session (see tpope/vim-pathogen docs)
 set shiftround              " Shift to certain columns, not just n spaces
 set shiftwidth=2            " Number of spaces to shift for autoindent or >,<
 set shortmess+=A            " Don't bother me when a swapfile exists
@@ -125,11 +132,33 @@ set softtabstop=2           " Spaces 'feel' like tabs
 set suffixes+=.pyc          " Ignore these files when tab-completing
 set tabstop=2               " The One True Tab
 set textwidth=100           " 100 is the new 80
-set thesaurus+=~/.vim/mthes10/mthesaur.txt
 set notitle                 " Don't set the title of the Vim window
 set wildmenu                " Show possible completions on command line
 set wildmode=list:longest,full " List all options and complete
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules  " Ignore certain files in tab-completion
 
-" Essential for filetype plugins.
-filetype plugin indent on
+
+" ----------------------------------------------------------------------------
+" Custom Scripts
+" ----------------------------------------------------------------------------
+" Use Q to intelligently close a window 
+" (if there are multiple windows into the same buffer)
+" or kill the buffer entirely if it's the last window looking into that buffer
+function! CloseWindowOrKillBuffer()
+  let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
+
+  " We should never bdelete a nerd tree
+  if matchstr(expand("%"), 'NERD') == 'NERD'
+    wincmd c
+    return
+  endif
+
+  if number_of_windows_to_this_buffer > 1
+    wincmd c
+  else
+    bdelete
+  endif
+endfunction
+
+nnoremap <silent> Q :call CloseWindowOrKillBuffer()<CR>
+
