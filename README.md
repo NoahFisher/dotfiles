@@ -1,5 +1,6 @@
 Create symlinks between dotfiles and vimfiles
 ```
+git clone https://github.com/NoahFisher/dotfiles.git
 cd ~
 ln -s dotfiles/vimrc .vimrc
 ln -s dotfiles/.vim .vim
