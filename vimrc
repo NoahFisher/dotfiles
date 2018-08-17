@@ -9,18 +9,28 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" ----------------------------------------------------------------------------
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " Plugins
-" ----------------------------------------------------------------------------
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" plugins
 Plugin 'airblade/vim-gitgutter'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'itchyny/lightline.vim'
+Plugin 'jgdavey/tslime.vim'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'rizzatti/dash.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'thoughtbot/vim-rspec'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
@@ -28,29 +38,22 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-pathogen'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-rhubarb'
-Plugin 'tpope/vim-sleuth'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-ruby/vim-ruby.git'
+Plugin 'vim-scripts/YankRing.vim'
+Plugin 'w0rp/ale'
 
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-
-" All of your Plugins must be added before the following line 
+" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-" ----------------------------------------------------------------------------
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " KEY MAPS
-" ----------------------------------------------------------------------------
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 nmap \i vip:sort<CR>n
-
-" Turn off linewise keys. Normally, the `j' and `k' keys move the cursor down one entire line. with
-" line wrapping on, this can cause the cursor to actually skip a few lines on the screen because
-" it's moving from line N to line N+1 in the file. I want this to act more visually -- I want `down'
-" to mean the next line on the screen
-nmap j gj
-nmap k gk
 
 " Super fast window movement shortcuts
 nmap <C-j> <C-W>j
@@ -58,9 +61,22 @@ nmap <C-k> <C-W>k
 nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 
-" ----------------------------------------------------------------------------
+" tmux navigator
+nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+
+" open/close quickfix window
+nmap <silent> ,qc :cclose<CR>
+nmap <silent> ,qo :copen<CR>
+
+" use // to clear the search
+nmap <silent> // :nohlsearch<CR>
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " PLUGIN SETTINGS
-" ----------------------------------------------------------------------------
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
 let maplocalleader = ","
@@ -68,6 +84,8 @@ let maplocalleader = ","
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
 set rtp+=/home/dev/.linuxbrew/opt/fzf/install
 set rtp+=~/.fzf
+
+nmap ; :Buffers<CR>
 nmap <Leader>r :Tags<CR>
 nmap <Leader>t :Files<CR>
 nmap <Leader>a :Ag<CR>
@@ -76,9 +94,32 @@ nmap <Leader>a :Ag<CR>
 nnoremap ,vv :Eview<cr>
 nnoremap ,cc :Econtroller<cr>
 
-" ----------------------------------------------------------------------------
+" Create window splits easier
+nnoremap <silent> vv <C-w>v
+nnoremap <silent> ss <C-w>s
+
+" hit ,f to find the definition of the current class
+" this uses ctags. the standard way to get this is Ctrl-]
+nnoremap <silent> ,f <C-]>
+"
+" " use ,F to jump to tag in a vertical split
+nnoremap <silent> ,F :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("tag ". word)<cr>
+"
+" " Open the Ag command and place the cursor into the quotes
+nmap ,gg :Ag ""<Left>
+nmap ,af :AgFile ""<Left>
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
-" ----------------------------------------------------------------------------
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+syntax enable
+set background=dark
+colorscheme solarized
+
+let g:airline_theme='solarized'
+let g:airline_solarized_bg='dark'
+
+set clipboard=unnamed       " Use system clipboard
 set autoindent              " Carry over indenting from previous line
 set autoread                " Don't bother me when a file changes
 set backspace=indent,eol,start
@@ -119,14 +160,11 @@ set relativenumber          " Use Relative Line Numbers
 set nowritebackup           " No backups made while editing
 set printoptions=paper:letter " US paper
 set ruler                   " Show row/col and percentage
-set scroll=4                " Number of lines to scroll with ^U/^D
-set scrolloff=15            " Keep cursor away from this many chars top/bot
 set shiftround              " Shift to certain columns, not just n spaces
 set shiftwidth=2            " Number of spaces to shift for autoindent or >,<
 set shortmess+=A            " Don't bother me when a swapfile exists
 set showbreak=              " Show for lines that have been wrapped, like Emacs
 set showmatch               " Hilight matching braces/parens/etc.
-set sidescrolloff=3         " Keep cursor away from this many chars left/right
 set smartcase               " Lets you search for ALL CAPS
 set softtabstop=2           " Spaces 'feel' like tabs
 set suffixes+=.pyc          " Ignore these files when tab-completing
@@ -138,10 +176,10 @@ set wildmode=list:longest,full " List all options and complete
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules  " Ignore certain files in tab-completion
 
 
-" ----------------------------------------------------------------------------
+" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Custom Scripts
-" ----------------------------------------------------------------------------
-" Use Q to intelligently close a window 
+" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+" Use Q to intelligently close a window
 " (if there are multiple windows into the same buffer)
 " or kill the buffer entirely if it's the last window looking into that buffer
 function! CloseWindowOrKillBuffer()
