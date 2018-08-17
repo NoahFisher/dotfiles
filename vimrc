@@ -18,16 +18,21 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" plugins
-Plugin 'airblade/vim-gitgutter'
+" Experimental Plugins
+Plugin 'mxw/vim-jsx'
+"
+"
+Plugin 'Raimondi/delimitMate'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'austintaylor/vim-indentobject'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'itchyny/lightline.vim'
 Plugin 'jgdavey/tslime.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
-Plugin 'mileszs/ack.vim'
 Plugin 'rizzatti/dash.vim'
+Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'thoughtbot/vim-rspec'
@@ -62,6 +67,8 @@ nmap <C-h> <C-W>h
 nmap <C-l> <C-W>l
 
 " tmux navigator
+" Don't allow any default key-mappings.
+let g:tmux_navigator_no_mappings = 1
 nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
@@ -85,9 +92,9 @@ let maplocalleader = ","
 set rtp+=/home/dev/.linuxbrew/opt/fzf/install
 set rtp+=~/.fzf
 
-nmap ; :Buffers<CR>
+nmap <Leader>b :Buffers<CR>
 nmap <Leader>r :Tags<CR>
-nmap <Leader>t :Files<CR>
+nmap <Leader>t :GFiles<CR>
 nmap <Leader>a :Ag<CR>
 
 " rails.vim (Better key maps for switching between controller and view)
@@ -108,6 +115,47 @@ nnoremap <silent> ,F :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("
 " " Open the Ag command and place the cursor into the quotes
 nmap ,gg :Ag ""<Left>
 nmap ,af :AgFile ""<Left>
+"grep the current word using ,k (mnemonic Kurrent)
+nnoremap <silent> ,k :Ag <cword><CR>
+
+"grep visual selection
+vnoremap ,k :<C-U>execute "Ag " . GetVisual()<CR>
+
+" hashmap
+imap <c-l> <space>=><space>
+
+" Open the project tree and expose current file in the nerdtree with Ctrl-\ calls NERDTreeFind iff
+" NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+function! OpenNerdTree()
+  if &modifiable && strlen(expand('%')) > 0 && !&diff
+    NERDTreeFind
+  else
+    NERDTreeToggle
+  endif
+endfunction
+nnoremap <silent> <C-\> :call OpenNerdTree()<CR>
+
+" Make nerdtree look nice
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let g:NERDTreeWinSize = 30
+
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+" ------- Sends spec to tmux window
+" RSpec.vim mappings
+let g:rspec_runner = "os_x_iterm2"
+" Run spec (file)
+map \rs :call RunCurrentSpecFile()<CR>
+" Run line
+map \rl :call RunNearestSpec()<CR>
+" Run previous
+map \rp :call RunLastSpec()<CR>
+" Run all
+map \ra :call RunAllSpecs()<CR>
+" Reset Tmux Vars (for sending to another session/window)
+nmap \rr <Plug>SetTmuxVars
+
+vmap \rv <Plug>SendSelectionToTmux
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
@@ -156,6 +204,7 @@ set modelines=5             " How many lines of head & tail to look for ml's
 silent! set mouse=nvc       " Use the mouse, but not in insert mode
 set nobackup                " No backups left after done editing
 set relativenumber          " Use Relative Line Numbers
+set number                  " Use Relative Line Numbers
 
 set nowritebackup           " No backups made while editing
 set printoptions=paper:letter " US paper
@@ -197,6 +246,39 @@ function! CloseWindowOrKillBuffer()
     bdelete
   endif
 endfunction
-
 nnoremap <silent> Q :call CloseWindowOrKillBuffer()<CR>
 
+" via: http://rails-bestpractices.com/posts/60-remove-trailing-whitespace
+" Strip trailing whitespace
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+command! StripTrailingWhitespaces call <SID>StripTrailingWhitespaces()
+nmap ,w :StripTrailingWhitespaces<CR>
+
+" make nerdtree a little prettier
+hi! link NERDTreeFile Constant
+hi! link NERDTreeDir Identifier
+
+" ================ Persistent Undo ==================
+" Keep undo history across sessions, by storing in file.
+if has('persistent_undo') && isdirectory(expand('~').'/.vim/backups')
+  silent !mkdir ~/.vim/backups > /dev/null 2>&1
+  set undodir=~/.vim/backups
+  set undofile
+endif
+
+" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+" Snippets
+" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+abbr log console.log()<left>
+abbr desc describe "" do<left><left><left><left>
+abbr rpt React.PropTypes.<left>
