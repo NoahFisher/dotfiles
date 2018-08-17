@@ -1,11 +1,12 @@
-Create symlinks between dotfiles and vimfiles
+Create symlinks between dotfiles and vimfiles, install Vundle, install fzf.
 ```
 git clone https://github.com/NoahFisher/dotfiles.git
 cd ~
 ln -s dotfiles/vimrc .vimrc
-ln -s dotfiles/.vim .vim
-```
+ln -s dotfiles/vim .vim
 
-to get fzf working, you need both of the following lines: 
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+```
