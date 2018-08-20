@@ -22,9 +22,10 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'mxw/vim-jsx'
 "
 "
+Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Raimondi/delimitMate'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'austintaylor/vim-indentobject'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'itchyny/lightline.vim'
@@ -59,7 +60,7 @@ filetype plugin indent on    " required
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " KEY MAPS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-nmap \i vip:sort<CR>n
+nmap \i vii:sort<CR>n
 
 " Super fast window movement shortcuts
 nmap <C-j> <C-W>j
@@ -276,6 +277,18 @@ if has('persistent_undo') && isdirectory(expand('~').'/.vim/backups')
   set undodir=~/.vim/backups
   set undofile
 endif
+
+" copy current filename into system clipboard - mnemonic: (c)urrent(f)ilename
+" this is helpful to paste someone the path you're looking at
+nnoremap <silent> ,cf :let @* = expand("%:~")<CR>
+nnoremap <silent> ,cr :let @* = expand("%")<CR>
+nnoremap <silent> ,cn :let @* = expand("%:t")<CR>
+
+" ============================
+" SplitJoin plugin
+" ============================
+nmap sj :SplitjoinSplit<cr>
+nmap sk :SplitjoinJoin<cr>
 
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Snippets
