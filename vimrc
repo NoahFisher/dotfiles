@@ -207,6 +207,7 @@ silent! set mouse=nvc       " Use the mouse, but not in insert mode
 set nobackup                " No backups left after done editing
 set relativenumber          " Use Relative Line Numbers
 set number                  " Use Relative Line Numbers
+set noshowmode              "Don't show current mode, lightline takes car of it
 
 set nowritebackup           " No backups made while editing
 set printoptions=paper:letter " US paper
@@ -289,6 +290,9 @@ nnoremap <silent> ,cn :let @* = expand("%:t")<CR>
 " ============================
 nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
+
+" pretty format a json file
+map \jt <Esc>:%!python -m json.tool<CR>
 
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Snippets
