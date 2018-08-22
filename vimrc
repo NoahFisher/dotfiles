@@ -60,7 +60,7 @@ filetype plugin indent on    " required
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " KEY MAPS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-nmap \i vii:sort<CR>n
+nmap \i vii:sort<CR>
 
 " Super fast window movement shortcuts
 nmap <C-j> <C-W>j
@@ -120,6 +120,19 @@ nmap ,af :AgFile ""<Left>
 "grep the current word using ,k (mnemonic Kurrent)
 nnoremap <silent> ,k :Ag <cword><CR>
 
+
+function! GetVisual()
+  let reg_save = getreg('"')
+  let regtype_save = getregtype('"')
+  let cb_save = &clipboard
+  set clipboard&
+  normal! ""gvy
+  let selection = getreg('"')
+  call setreg('"', reg_save, regtype_save)
+  let &clipboard = cb_save
+  return selection
+endfunction
+
 "grep visual selection
 vnoremap ,k :<C-U>execute "Ag " . GetVisual()<CR>
 
@@ -169,7 +182,9 @@ colorscheme solarized
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 
-set clipboard=unnamed       " Use system clipboard
+if $TMUX == ''
+  set clipboard=unnamed       " Use system when not using tmux
+endif
 set autoindent              " Carry over indenting from previous line
 set autoread                " Don't bother me when a file changes
 set backspace=indent,eol,start
@@ -293,6 +308,9 @@ nmap sk :SplitjoinJoin<cr>
 
 " pretty format a json file
 map \jt <Esc>:%!python -m json.tool<CR>
+
+" spell check
+map <leader>ss :setlocal spell!<cr>
 
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Snippets
