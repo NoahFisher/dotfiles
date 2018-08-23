@@ -20,6 +20,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Experimental Plugins
 Plugin 'mxw/vim-jsx'
+Plugin 'sirver/ultisnips'
+Plugin 'honza/vim-snippets'
 "
 "
 Plugin 'AndrewRadev/splitjoin.vim'
@@ -160,17 +162,22 @@ let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
 " RSpec.vim mappings
 let g:rspec_runner = "os_x_iterm2"
 " Run spec (file)
-map \rs :call RunCurrentSpecFile()<CR>
+map ,rs :call RunCurrentSpecFile()<CR>
 " Run line
-map \rl :call RunNearestSpec()<CR>
+map ,rl :call RunNearestSpec()<CR>
 " Run previous
-map \rp :call RunLastSpec()<CR>
+map ,rp :call RunLastSpec()<CR>
 " Run all
-map \ra :call RunAllSpecs()<CR>
+map ,ra :call RunAllSpecs()<CR>
 " Reset Tmux Vars (for sending to another session/window)
-nmap \rr <Plug>SetTmuxVars
+nmap ,rr <Plug>SetTmuxVars
+" Send visual selection to tmux
+vmap ,rv <Plug>SendSelectionToTmux
 
-vmap \rv <Plug>SendSelectionToTmux
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>""
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
@@ -182,9 +189,7 @@ colorscheme solarized
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 
-if $TMUX == ''
-  set clipboard=unnamed       " Use system when not using tmux
-endif
+set clipboard=unnamed       " Use system keyboard
 set autoindent              " Carry over indenting from previous line
 set autoread                " Don't bother me when a file changes
 set backspace=indent,eol,start
@@ -311,10 +316,3 @@ map \jt <Esc>:%!python -m json.tool<CR>
 
 " spell check
 map <leader>ss :setlocal spell!<cr>
-
-" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-" Snippets
-" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-abbr log console.log()<left>
-abbr desc describe "" do<left><left><left><left>
-abbr rpt React.PropTypes.<left>
