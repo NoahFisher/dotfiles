@@ -22,6 +22,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'sirver/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'chrisbra/csv.vim'
 "
 "
 Plugin 'AndrewRadev/splitjoin.vim'
