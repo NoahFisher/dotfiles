@@ -1,0 +1,21 @@
+# React Snippets
+# Closure loop
+snippet rcla
+	class @${1:MyComponent} extends React.Component
+		render: ->
+			`<div></div>`
+# React constructor
+snippet rcon
+	constructor: (props) ->
+		super(props)
+
+		@state = {
+			${1}: ${0},
+		}
+# React setup props
+snippet rpts
+	@propTypes =
+		${1}: React.PropTypes.${0}
+# React props
+snippet rpt
+	${1}: React.PropTypes.${0}
