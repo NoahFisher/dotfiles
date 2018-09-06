@@ -16,12 +16,12 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Experimental Plugins
 Plugin 'mxw/vim-jsx'
-Plugin 'sirver/ultisnips'
-Plugin 'honza/vim-snippets'
+Plugin 'sirver/ultisnips'                 " snippet engine
+Plugin 'honza/vim-snippets'               " snippets (avoid writing boilerplate)
 Plugin 'chrisbra/csv.vim'
 "
 "
@@ -30,16 +30,16 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'austintaylor/vim-indentobject'
-Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'christoomey/vim-tmux-navigator'   " Seamless navigation between tmux panes and vim splits
 Plugin 'itchyny/lightline.vim'
-Plugin 'jgdavey/tslime.vim'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
+Plugin 'jgdavey/tslime.vim'               " send things to tmux
+Plugin 'junegunn/fzf'                     " fuzzy file finder
+Plugin 'junegunn/fzf.vim'                 " vim keybindings
 Plugin 'rizzatti/dash.vim'
-Plugin 'rking/ag.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'thoughtbot/vim-rspec'
+Plugin 'rking/ag.vim'                     " search
+Plugin 'scrooloose/nerdtree'              " file system explorer
+Plugin 'sheerun/vim-polyglot'             " language packs
+Plugin 'thoughtbot/vim-rspec'             " rspec helper
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
@@ -48,13 +48,13 @@ Plugin 'tpope/vim-pathogen'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-unimpaired'             " Pairs of handy bracket mappings
 Plugin 'tpope/vim-abolish'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-ruby/vim-ruby.git'
-Plugin 'vim-scripts/YankRing.vim'
-Plugin 'w0rp/ale'
+Plugin 'vim-scripts/YankRing.vim'         " copy pasta
+Plugin 'w0rp/ale'                         " linting
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
