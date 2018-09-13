@@ -20,14 +20,14 @@ Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Experimental Plugins
 Plugin 'mxw/vim-jsx'
-Plugin 'sirver/ultisnips'                 " snippet engine
-Plugin 'honza/vim-snippets'               " snippets (avoid writing boilerplate)
+" Plugin 'sirver/ultisnips'                 " deactivating bc it's slowing things down
+" Plugin 'honza/vim-snippets'               " deactivating bc it's slowing things down
 Plugin 'chrisbra/csv.vim'
+" Plugin 'airblade/vim-gitgutter'          " deactivating bc it's slowing things down
 "
 "
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Raimondi/delimitMate'
-Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'austintaylor/vim-indentobject'
 Plugin 'christoomey/vim-tmux-navigator'   " Seamless navigation between tmux panes and vim splits
@@ -176,9 +176,9 @@ nmap ,rr <Plug>SetTmuxVars
 vmap ,rv <Plug>SendSelectionToTmux
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>""
+" let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>""
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
@@ -187,8 +187,8 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-let g:airline_theme='solarized'
-let g:airline_solarized_bg='dark'
+" let g:airline_theme='solarized'
+" let g:airline_solarized_bg='dark'
 
 set clipboard=unnamed       " Use system keyboard
 set autoindent              " Carry over indenting from previous line

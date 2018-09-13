@@ -10,3 +10,7 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 ```
+
+
+Some things to get tmux and macosx working nicely together:
+http://blog.firstiwaslike.com/working-with-the-macos-system-clipboard-in-vim-inside-tmux/
