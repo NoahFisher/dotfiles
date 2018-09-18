@@ -19,11 +19,12 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Experimental Plugins
+Plugin 'fatih/vim-go'
 Plugin 'mxw/vim-jsx'
-" Plugin 'sirver/ultisnips'                 " deactivating bc it's slowing things down
-" Plugin 'honza/vim-snippets'               " deactivating bc it's slowing things down
+" Plugin 'sirver/ultisnips'             " deactivating bc it's slowing things down
+" Plugin 'honza/vim-snippets'           " deactivating bc it's slowing things down
 Plugin 'chrisbra/csv.vim'
-" Plugin 'airblade/vim-gitgutter'          " deactivating bc it's slowing things down
+" Plugin 'airblade/vim-gitgutter'       " deactivating bc it's slowing things down
 "
 "
 Plugin 'AndrewRadev/splitjoin.vim'
