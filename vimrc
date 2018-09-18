@@ -221,14 +221,15 @@ set infercase               " Completion recognizes capitalization
 set laststatus=2            " Always show the status bar
 set linebreak               " Break long lines by word, not char
 set list                    " Show whitespace as special chars - see listchars
-set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:· " Unicode characters for various things
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+                            " Unicode characters for various things
 set matchtime=2             " Tenths of second to hilight matching paren
 set modelines=5             " How many lines of head & tail to look for ml's
 silent! set mouse=nvc       " Use the mouse, but not in insert mode
 set nobackup                " No backups left after done editing
 set relativenumber          " Use Relative Line Numbers
 set number                  " Use Relative Line Numbers
-set noshowmode              "Don't show current mode, lightline takes car of it
+set noshowmode              " Don't show current mode, airline takes car of it
 
 set nowritebackup           " No backups made while editing
 set printoptions=paper:letter " US paper
@@ -252,9 +253,8 @@ set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules  " Ignore certain files in
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Custom Scripts
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
-" Use Q to intelligently close a window
-" (if there are multiple windows into the same buffer)
-" or kill the buffer entirely if it's the last window looking into that buffer
+" Use Q to intelligently close a window (if there are multiple windows into the same buffer) or kill
+" the buffer entirely if it's the last window looking into that buffer
 function! CloseWindowOrKillBuffer()
   let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
 
@@ -317,3 +317,22 @@ map \jt <Esc>:%!python -m json.tool<CR>
 
 " spell check
 map <leader>ss :setlocal spell!<cr>
+
+" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+" Open a split for each dirty file in git
+" stolen from Gary Bernhardt: https://github.com/garybernhardt/dotfiles
+" - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
+function! OpenChangedFiles()
+  only " Close all windows, unless they're modified
+  let status = system('git status -s | grep "^ \?\(M\|A\)" | cut -d " " -f 3')
+  let filenames = split(status, "\n")
+  if len(filenames) > 0
+    exec "edit " . filenames[0]
+    for filename in filenames[1:]
+      exec "sp " . filename
+    endfor
+  end
+endfunction
+command! OpenChangedFiles :call OpenChangedFiles()
+
+nnoremap ,ocf :OpenChangedFiles<CR>
