@@ -20,6 +20,7 @@ Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Experimental Plugins
 Plugin 'fatih/vim-go'
+Plugin 'junegunn/goyo.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'chrisbra/csv.vim'
