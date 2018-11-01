@@ -183,6 +183,9 @@ vmap ,rv <Plug>SendSelectionToTmux
 " let g:UltiSnipsJumpForwardTrigger="<c-b>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-z>""
 
+" commentary isn't using the correct character for cpp/h files.
+autocmd FileType cpp setlocal commentstring=//\ %s
+autocmd FileType h setlocal commentstring=//\ %s
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
