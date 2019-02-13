@@ -24,8 +24,14 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'chrisbra/csv.vim'
-" Plugin 'sirver/ultisnips'             " deactivating bc it's slowing things down
-" Plugin 'honza/vim-snippets'           " deactivating bc it's slowing things down
+"Plugin 'pangloss/vim-javascript'        " vim polyglot optimizes plugins, try it manually?
+                                        " deactivating bc it's slowing things down
+                                        "
+                                        "
+
+" Plugin 'epilande/vim-react-snippets'    " React code snippets
+" Plugin 'SirVer/ultisnips'               " this was deactivated, but trying again. Will see if it's too slow...
+" Plugin 'honza/vim-snippets'
 " Plugin 'airblade/vim-gitgutter'       " deactivating bc it's slowing things down
 "
 "
@@ -53,8 +59,6 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'             " Pairs of handy bracket mappings
 Plugin 'tpope/vim-abolish'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-ruby/vim-ruby.git'
 Plugin 'vim-scripts/YankRing.vim'         " copy pasta
 Plugin 'w0rp/ale'                         " linting
@@ -186,15 +190,62 @@ vmap ,rv <Plug>SendSelectionToTmux
 " commentary isn't using the correct character for cpp/h files.
 autocmd FileType cpp setlocal commentstring=//\ %s
 autocmd FileType h setlocal commentstring=//\ %s
+
+" add syntax highlighting for prisma's GraphQL data
+augroup prisma_dt
+  au!
+  autocmd BufNewFile,BufRead *.prisma   set syntax=graphql
+augroup END
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 syntax enable
 set background=dark
 colorscheme solarized
+" let g:lightline = {
+"   \ 'colorscheme': 'solarized',
+"   \ 'component_function': {
+"   \    'filename': 'FilenameForLightline'
+"   \ }
+" \ }
+let g:lightline = {
+  \ 'colorscheme': 'solarized',
+  \ 'tab_component_function': {
+  \   'filename': 'MyTabFilename',
+  \ },
+\}
 
-" let g:airline_theme='solarized'
-" let g:airline_solarized_bg='dark'
+function! MyTabFilename(n)
+  let buflist = tabpagebuflist(a:n)
+  let winnr = tabpagewinnr(a:n)
+  let bufnum = buflist[winnr - 1]
+  let bufname = expand('#'.bufnum.':t')
+  let buffullname = expand('#'.bufnum.':p')
+  let buffullnames = []
+  let bufnames = []
+  for i in range(1, tabpagenr('$'))
+    if i != a:n
+      let num = tabpagebuflist(i)[tabpagewinnr(i) - 1]
+      call add(buffullnames, expand('#' . num . ':p'))
+      call add(bufnames, expand('#' . num . ':t'))
+    endif
+  endfor
+  let i = index(bufnames, bufname)
+  if strlen(bufname) && i >= 0 && buffullnames[i] != buffullname
+    return substitute(buffullname, '.*/\([^/]\+/\)', '\1', '')
+  else
+    return strlen(bufname) ? bufname : '[No Name]'
+  endif
+endfunction
+" Show full path for filename
+function! FilenameForLightline()
+  return expand('%')
+endfunction
+  
+" https://github.com/itchyny/lightline.vim
+if !has('gui_running')
+  set t_Co=256
+endif
 
 set clipboard=unnamed       " Use system keyboard
 set autoindent              " Carry over indenting from previous line
@@ -249,7 +300,7 @@ set smartcase               " Lets you search for ALL CAPS
 set softtabstop=2           " Spaces 'feel' like tabs
 set suffixes+=.pyc          " Ignore these files when tab-completing
 set tabstop=2               " The One True Tab
-set textwidth=100           " 100 is the new 80
+set textwidth=90            " line length matches common screen size (mac 13" w v splits)
 set notitle                 " Don't set the title of the Vim window
 set wildmenu                " Show possible completions on command line
 set wildmode=list:longest,full " List all options and complete
@@ -342,3 +393,10 @@ endfunction
 command! OpenChangedFiles :call OpenChangedFiles()
 
 nnoremap ,ocf :OpenChangedFiles<CR>
+
+
+" -- -- --
+" gui settings (font-size)
+set gfn=Monaco:h14
+" -- -- --
+

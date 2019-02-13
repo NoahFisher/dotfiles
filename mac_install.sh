@@ -11,6 +11,8 @@ ln -s dotfiles/vimrc ~/.vimrc
 ln -s dotfiles/vim ~/.vim
 ln -s dotfiles/tmux.conf ~/.tmux.conf
 ln -s dotfiles/inputrc ~/.inputrc
+ln -s dotfiles/ctags ~/.ctags
+ln -s dotfiles/gitignore_global ~/.gitignore_global
 
 # install the latest version of Vundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
