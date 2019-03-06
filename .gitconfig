@@ -4,3 +4,17 @@
   st = status
   br = branch
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  l = log --pretty=format:\"%Cgreen%h%Creset | %cr %cn %Cgreen%s%Creset\"
+
+[filter "lfs"]
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+[user]
+  name = NoahFisher
+  email = noah.fisher@gmail.com
+[init]
+  templatedir = ~/.git_template
+[core]
+	excludesfile = /Users/noah/.gitignore_global

@@ -45,21 +45,23 @@ Plugin 'jgdavey/tslime.vim'               " send things to tmux
 Plugin 'junegunn/fzf'                     " fuzzy file finder
 Plugin 'junegunn/fzf.vim'                 " vim keybindings
 Plugin 'rizzatti/dash.vim'
-Plugin 'rking/ag.vim'                     " search
+Plugin 'mileszs/ack.vim'                   " search (Ack is the new Ag which was the new grep)
 Plugin 'scrooloose/nerdtree'              " file system explorer
 Plugin 'sheerun/vim-polyglot'             " language packs
 Plugin 'thoughtbot/vim-rspec'             " rspec helper
+Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-pathogen'
 Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-rbenv'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'             " Pairs of handy bracket mappings
-Plugin 'tpope/vim-abolish'
-Plugin 'vim-ruby/vim-ruby.git'
+Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/YankRing.vim'         " copy pasta
 Plugin 'w0rp/ale'                         " linting
 
@@ -93,6 +95,10 @@ nmap <silent> ,qo :copen<CR>
 " use // to clear the search
 nmap <silent> // :nohlsearch<CR>
 
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " PLUGIN SETTINGS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -107,7 +113,7 @@ set rtp+=~/.fzf
 nmap <Leader>b :Buffers<CR>
 nmap <Leader>r :Tags<CR>
 nmap <Leader>t :GFiles<CR>
-nmap <Leader>a :Ag<CR>
+" nmap <Leader>a :Ag<CR>
 
 " rails.vim (Better key maps for switching between controller and view)
 nnoremap ,vv :Eview<cr>
@@ -117,19 +123,18 @@ nnoremap ,cc :Econtroller<cr>
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
 
-" hit ,f to find the definition of the current class
-" this uses ctags. the standard way to get this is Ctrl-]
-nnoremap <silent> ,f <C-]>
-"
+" " hit ,f to find the definition of the current class
+" " this uses ctags. the standard way to get this is Ctrl-]
+" nnoremap <silent> ,f <C-]>
+
 " " use ,F to jump to tag in a vertical split
 nnoremap <silent> ,F :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("tag ". word)<cr>
-"
-" " Open the Ag command and place the cursor into the quotes
-nmap ,gg :Ag ""<Left>
-nmap ,af :AgFile ""<Left>
-"grep the current word using ,k (mnemonic Kurrent)
-nnoremap <silent> ,k :Ag <cword><CR>
 
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+" SEARCH SETTINGS
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+" " Open the Ag command and place the cursor into the quotes
+nmap ,gg :Ack ''<Left>
 
 function! GetVisual()
   let reg_save = getreg('"')
@@ -145,6 +150,8 @@ endfunction
 
 "grep visual selection
 vnoremap ,k :<C-U>execute "Ag " . GetVisual()<CR>
+"grep the current word using ,k (mnemonic Kurrent)
+"nnoremap <silent> ,k :Ack <cword><CR>
 
 " hashmap
 imap <c-l> <space>=><space>
@@ -165,7 +172,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
-let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
 " ------- Sends spec to tmux window
 " RSpec.vim mappings
 let g:rspec_runner = "os_x_iterm2"
@@ -196,18 +203,14 @@ augroup prisma_dt
   au!
   autocmd BufNewFile,BufRead *.prisma   set syntax=graphql
 augroup END
+
+let g:ale_ruby_rubocop_options="--display-cop-names --rails"
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 syntax enable
 set background=dark
 colorscheme solarized
-" let g:lightline = {
-"   \ 'colorscheme': 'solarized',
-"   \ 'component_function': {
-"   \    'filename': 'FilenameForLightline'
-"   \ }
-" \ }
 let g:lightline = {
   \ 'colorscheme': 'solarized',
   \ 'tab_component_function': {
@@ -241,7 +244,7 @@ endfunction
 function! FilenameForLightline()
   return expand('%')
 endfunction
-  
+
 " https://github.com/itchyny/lightline.vim
 if !has('gui_running')
   set t_Co=256
