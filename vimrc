@@ -24,6 +24,7 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'chrisbra/csv.vim'
+Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
 "Plugin 'pangloss/vim-javascript'        " vim polyglot optimizes plugins, try it manually?
                                         " deactivating bc it's slowing things down
                                         "
@@ -45,7 +46,7 @@ Plugin 'jgdavey/tslime.vim'               " send things to tmux
 Plugin 'junegunn/fzf'                     " fuzzy file finder
 Plugin 'junegunn/fzf.vim'                 " vim keybindings
 Plugin 'rizzatti/dash.vim'
-Plugin 'mileszs/ack.vim'                   " search (Ack is the new Ag which was the new grep)
+Plugin 'mileszs/ack.vim'                  " search (Ack is the new Ag which was the new grep)
 Plugin 'scrooloose/nerdtree'              " file system explorer
 Plugin 'sheerun/vim-polyglot'             " language packs
 Plugin 'thoughtbot/vim-rspec'             " rspec helper
@@ -104,16 +105,16 @@ endif
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
-let maplocalleader = ","
+let maplocalleader = "\\"
 
 " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
 set rtp+=/home/dev/.linuxbrew/opt/fzf/install
 set rtp+=~/.fzf
 
+nmap <Leader>a :Files<CR>
 nmap <Leader>b :Buffers<CR>
-nmap <Leader>r :Tags<CR>
+nmap <Leader>s :Tags<CR>
 nmap <Leader>t :GFiles<CR>
-" nmap <Leader>a :Ag<CR>
 
 " rails.vim (Better key maps for switching between controller and view)
 nnoremap ,vv :Eview<cr>
@@ -134,7 +135,7 @@ nnoremap <silent> ,F :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("
 " SEARCH SETTINGS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " " Open the Ag command and place the cursor into the quotes
-nmap ,gg :Ack ''<Left>
+nmap <leader>gg :Ack ''<Left>
 
 function! GetVisual()
   let reg_save = getreg('"')
@@ -149,9 +150,13 @@ function! GetVisual()
 endfunction
 
 "grep visual selection
-vnoremap ,k :<C-U>execute "Ag " . GetVisual()<CR>
+vnoremap <leader>k :<C-U>execute "Ag " . GetVisual()<CR>
 "grep the current word using ,k (mnemonic Kurrent)
-"nnoremap <silent> ,k :Ack <cword><CR>
+nnoremap <silent> <leader>k :Ack <cword><CR>
+" let g:ack_apply_qmappings = 1
+" let g:ack_apply_lmappings = 1
+let g:ack_apply_qmappings = 0
+let g:ack_apply_lmappings = 0
 
 " hashmap
 imap <c-l> <space>=><space>
@@ -373,10 +378,10 @@ nmap sj :SplitjoinSplit<cr>
 nmap sk :SplitjoinJoin<cr>
 
 " pretty format a json file
-map \jt <Esc>:%!python -m json.tool<CR>
+map <localleader>jt <Esc>:%!python -m json.tool<CR>
 
 " spell check
-map <leader>ss :setlocal spell!<cr>
+map <localleader>ss :setlocal spell!<cr>
 
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Open a split for each dirty file in git

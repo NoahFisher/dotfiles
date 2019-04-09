@@ -1,5 +1,8 @@
 [[ -s ~/.bashrc ]] && source ~/.bashrc
 
+# git auto completion
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
 eval "$(rbenv init -)"
 export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
 export PATH="/usr/local/opt/redis@4.0/bin:$PATH"

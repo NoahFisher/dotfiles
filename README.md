@@ -15,3 +15,18 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 Some things to get tmux and macosx working nicely together:
 http://blog.firstiwaslike.com/working-with-the-macos-system-clipboard-in-vim-inside-tmux/
+
+
+tmux tips:
+```
+leader: ctrl space
+split pane into new window: <leader> !
+join pane: <leader> :join-pane -v 2
+join pane horizontally: <leader> :join-pane -t 2
+```
+
+
+mysql pager (behaves like less in psql)
+```
+\P less -SinFX
+```
