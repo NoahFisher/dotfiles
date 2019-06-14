@@ -25,6 +25,16 @@ join pane: <leader> :join-pane -v 2
 join pane horizontally: <leader> :join-pane -t 2
 ```
 
+vim tips:
+
+To edit a macro:
+- "qp paste the contents of the register to the current cursor position
+- I enter insert mode at the begging of the pasted line
+- ^ add the missing motion to return to the front of the line
+- <Escape> return to visual mode
+- "qyy yank this new modified macro back into the q register
+- dd delete the pasted register from the file your editing
+
 
 mysql pager (behaves like less in psql)
 ```

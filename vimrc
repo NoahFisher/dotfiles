@@ -21,6 +21,7 @@ Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 " Experimental Plugins
 Plugin 'fatih/vim-go'
 Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/vim-easy-align'         " align tables in markdown
 Plugin 'mxw/vim-jsx'
 Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'chrisbra/csv.vim'
@@ -178,6 +179,7 @@ let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
 let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
+" let g:rspec_command = 'call Send_to_Tmux("bin/rspec {spec}\n")'
 " ------- Sends spec to tmux window
 " RSpec.vim mappings
 let g:rspec_runner = "os_x_iterm2"
@@ -210,11 +212,20 @@ augroup prisma_dt
 augroup END
 
 let g:ale_ruby_rubocop_options="--display-cop-names --rails"
+" use :ALEFix to run a fixer on a file
+let g:ale_fixers = {
+\   'ruby': ['rubocop'],
+\   'javascript': ['eslint'],
+\   'html.handlebars': ['prettier'],
+\}
+
+map <localleader>a :ALEFix<CR>
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " OPTIONS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 syntax enable
-set background=dark
+" set background=dark
 colorscheme solarized
 let g:lightline = {
   \ 'colorscheme': 'solarized',
@@ -222,6 +233,21 @@ let g:lightline = {
   \   'filename': 'MyTabFilename',
   \ },
 \}
+
+function! s:lightline_update()
+  if !exists('g:loaded_lightline')
+    return
+  endif
+  try
+    if g:colors_name =~# 'solarized'
+      runtime autoload/lightline/colorscheme/solarized.vim
+      call lightline#init()
+      call lightline#colorscheme()
+      call lightline#update()
+    endif
+  catch
+  endtry
+endfunction
 
 function! MyTabFilename(n)
   let buflist = tabpagebuflist(a:n)
@@ -408,3 +434,6 @@ nnoremap ,ocf :OpenChangedFiles<CR>
 set gfn=Monaco:h14
 " -- -- --
 
+
+" Align GitHub-flavored Markdown tables
+vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>

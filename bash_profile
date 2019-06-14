@@ -6,7 +6,11 @@
 eval "$(rbenv init -)"
 export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
 export PATH="/usr/local/opt/redis@4.0/bin:$PATH"
+export PATH="/usr/local/opt/node@10/bin:$PATH"
 
+# python
+export PATH="~/.pyenv/versions/3.5.2/bin:$PATH"
+export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
 
 # Prompt
 parse_git_branch() {
