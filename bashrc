@@ -1,5 +1,15 @@
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+# History file changes
+# https://www.shellhacks.com/tune-command-line-history-bash/
+export HISTTIMEFORMAT="%h %d %H:%M:%S "
+export HISTSIZE=10000
+export HISTFILESIZE=10000
+export PROMPT_COMMAND='history -a'
+export HISTCONTROL=ignorespace:erasedups
+export HISTIGNORE="ls:ps:history"
+shopt -s cmdhist
+
 # Me hate to type
 alias dc='docker-compose'
 alias pumalogs='tail -f ~/Library/Logs/puma-dev.log'
