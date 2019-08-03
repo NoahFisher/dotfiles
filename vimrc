@@ -160,7 +160,7 @@ let g:ack_apply_qmappings = 0
 let g:ack_apply_lmappings = 0
 
 " hashmap
-imap <c-l> <space>=><space>
+imap <c-=> <space>=><space>
 
 " Open the project tree and expose current file in the nerdtree with Ctrl-\ calls NERDTreeFind iff
 " NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
@@ -337,7 +337,8 @@ set tabstop=2               " The One True Tab
 set textwidth=90            " line length matches common screen size (mac 13" w v splits)
 set notitle                 " Don't set the title of the Vim window
 set wildmenu                " Show possible completions on command line
-set wildmode=list:longest,full " List all options and complete
+set complete=.,b,u,]        " pull from keywords in current file, buffers, & tags file
+set wildmode=list,list:longest,full " List all options and complete
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules  " Ignore certain files in tab-completion
 
 
