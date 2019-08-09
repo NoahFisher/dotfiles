@@ -58,7 +58,9 @@ Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-pathogen'
-Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-projectionist'          " Tpope... you dawg.
+Plugin 'tpope/vim-rails'                  " Tpope... you aminal.
+Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-rbenv'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
