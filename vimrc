@@ -73,6 +73,8 @@ Plugin 'w0rp/ale'                         " linting
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+runtime macros/matchit.vim
+
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " KEY MAPS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -162,7 +164,7 @@ let g:ack_apply_qmappings = 0
 let g:ack_apply_lmappings = 0
 
 " hashmap
-imap <c-=> <space>=><space>
+imap <c-L> <space>=><space>
 
 " Open the project tree and expose current file in the nerdtree with Ctrl-\ calls NERDTreeFind iff
 " NERDTree is active, current window contains a modifiable file, and we're not in vimdiff

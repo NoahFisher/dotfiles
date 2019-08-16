@@ -28,6 +28,7 @@ alias gr2='git reset --soft HEAD~2'
 alias gr='git rebase'
 alias gs='git status'
 
+# aliases
 alias ae='vim ~/.bashrc'
 alias editssh='vim ~/.ssh/config'
 
