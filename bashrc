@@ -46,3 +46,6 @@ alias cdmnotes='cd ~/Documents/meeting-notes/'
 alias cdssh='cd ~/.ssh'
 
 alias ngrok='~/development/ngrok'
+
+# `gdmb` (g)it (d)elete (m)erged (b)ranches - Deletes all branches already merged on current branch
+alias gdmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'

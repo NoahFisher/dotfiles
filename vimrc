@@ -94,6 +94,9 @@ nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
 " open/close quickfix window
 nmap <silent> ,qc :cclose<CR>
 nmap <silent> ,qo :copen<CR>
