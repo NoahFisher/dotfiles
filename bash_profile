@@ -1,7 +1,12 @@
 [[ -s ~/.bashrc ]] && source ~/.bashrc
 
-# git auto completion
+# git commands auto completion
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
+# git branch autocompletion
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
 
 eval "$(rbenv init -)"
 export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"

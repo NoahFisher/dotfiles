@@ -19,11 +19,11 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Experimental Plugins
-Plugin 'fatih/vim-go'
-Plugin 'junegunn/goyo.vim'
+" Plugin 'fatih/vim-go'
+" Plugin 'junegunn/goyo.vim'
+" Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'junegunn/vim-easy-align'         " align tables in markdown
 Plugin 'mxw/vim-jsx'
-Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'chrisbra/csv.vim'
 Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
 "Plugin 'pangloss/vim-javascript'        " vim polyglot optimizes plugins, try it manually?
@@ -57,9 +57,9 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-pathogen'
-Plugin 'tpope/vim-projectionist'          " Tpope... you dawg.
-Plugin 'tpope/vim-rails'                  " Tpope... you aminal.
+" Plugin 'tpope/vim-pathogen'             " Unused?
+Plugin 'tpope/vim-projectionist'
+Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-rbenv'
 Plugin 'tpope/vim-repeat'

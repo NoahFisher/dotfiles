@@ -1,4 +1,4 @@
-Create symlinks between dotfiles and vimfiles, install Vundle, install fzf.
+# Create symlinks between dotfiles and vimfiles, install Vundle, install fzf.
 ```
 git clone https://github.com/NoahFisher/dotfiles.git
 cd ~
@@ -12,6 +12,10 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 ```
 
+# Install git branch autocomplete script
+```
+curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+```
 
 Some things to get tmux and macosx working nicely together:
 http://blog.firstiwaslike.com/working-with-the-macos-system-clipboard-in-vim-inside-tmux/
