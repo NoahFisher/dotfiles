@@ -44,8 +44,28 @@ alias cdo='cd ~/development/open-source'
 alias cdot='cd ~/dotfiles/'
 alias cdmnotes='cd ~/Documents/meeting-notes/'
 alias cdssh='cd ~/.ssh'
+alias cdq='cd ~/development/simplepractice/quartet'
 
 alias ngrok='~/development/ngrok'
 
 # `gdmb` (g)it (d)elete (m)erged (b)ranches - Deletes all branches already merged on current branch
 alias gdmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
+
+# open pivotal or if you pass a link, open pivotal at that story
+alias pivotal='function _pivotal() {
+  if [ -z "$1" ]
+    then
+      open -a "Google Chrome" https://www.pivotaltracker.com/n/projects/281125
+    else
+      open -a "Google Chrome" https://www.pivotaltracker.com/n/projects/281125/stories/$1
+  fi
+};_pivotal'
+
+# open semaphore for the current branch (only works on main web repo currently)
+alias semaphore='function _semaphore() {
+  local branch="$(git symbolic-ref --short -q HEAD)"
+  echo "${branch}"
+  open -a "Google Chrome" "https://semaphoreci.com/simplepractice/simplepractice/branches/${branch}"
+};_semaphore'
+
+alias asana='open -a "Google Chrome" https://app.asana.com/0/578533578074205/list'

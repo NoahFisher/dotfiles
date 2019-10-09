@@ -67,7 +67,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'             " Pairs of handy bracket mappings
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/YankRing.vim'         " copy pasta
-Plugin 'w0rp/ale'                         " linting
+Plugin 'dense-analysis/ale'               " linting
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -96,6 +96,10 @@ nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
+
+" zoom a vim pane, <C-w>= to re-balance
+" nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+" nnoremap <leader>= :wincmd =<cr>
 
 " open/close quickfix window
 nmap <silent> ,qc :cclose<CR>
