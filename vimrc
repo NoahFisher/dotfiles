@@ -40,6 +40,7 @@ Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'morhetz/gruvbox'                  " Different color scheme
 Plugin 'austintaylor/vim-indentobject'
 Plugin 'christoomey/vim-tmux-navigator'   " Seamless navigation between tmux panes and vim splits
 Plugin 'itchyny/lightline.vim'
@@ -237,9 +238,9 @@ map <localleader>a :ALEFix<CR>
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 syntax enable
 " set background=dark
-colorscheme solarized
+colorscheme gruvbox
 let g:lightline = {
-  \ 'colorscheme': 'solarized',
+  \ 'colorscheme': 'gruvbox',
   \ 'tab_component_function': {
   \   'filename': 'MyTabFilename',
   \ },
@@ -250,8 +251,8 @@ function! s:lightline_update()
     return
   endif
   try
-    if g:colors_name =~# 'solarized'
-      runtime autoload/lightline/colorscheme/solarized.vim
+    if g:colors_name =~# 'gruvbox'
+      runtime autoload/lightline/colorscheme/gruvbox.vim
       call lightline#init()
       call lightline#colorscheme()
       call lightline#update()
