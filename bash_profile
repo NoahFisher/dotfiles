@@ -24,3 +24,6 @@ parse_git_branch() {
 export PS1="\[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Colors
+export TERM=xterm-256color

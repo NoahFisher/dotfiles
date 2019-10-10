@@ -1,5 +1,6 @@
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+
 # History file changes
 # https://www.shellhacks.com/tune-command-line-history-bash/
 export HISTTIMEFORMAT="%h %d %H:%M:%S "
@@ -45,6 +46,7 @@ alias cdot='cd ~/dotfiles/'
 alias cdmnotes='cd ~/Documents/meeting-notes/'
 alias cdssh='cd ~/.ssh'
 alias cdq='cd ~/development/simplepractice/quartet'
+alias cdehr='cd ~/dev/cvid/ehr_web'
 
 alias ngrok='~/development/ngrok'
 
@@ -69,3 +71,5 @@ alias semaphore='function _semaphore() {
 };_semaphore'
 
 alias asana='open -a "Google Chrome" https://app.asana.com/0/578533578074205/list'
+
+alias tmux='tmux -2'
