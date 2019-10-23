@@ -50,6 +50,8 @@ alias cdehr='cd ~/dev/cvid/ehr_web'
 
 alias ngrok='~/development/ngrok'
 
+alias be='bundle exec'
+
 # `gdmb` (g)it (d)elete (m)erged (b)ranches - Deletes all branches already merged on current branch
 alias gdmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 
@@ -65,7 +67,7 @@ alias pivotal='function _pivotal() {
 
 # open semaphore for the current branch (only works on main web repo currently)
 alias semaphore='function _semaphore() {
-  local branch="$(git symbolic-ref --short -q HEAD)"
+  local branch="$(git symbolic-ref --short -q HEAD | tr / -)"
   echo "${branch}"
   open -a "Google Chrome" "https://semaphoreci.com/simplepractice/simplepractice/branches/${branch}"
 };_semaphore'

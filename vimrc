@@ -19,11 +19,15 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Experimental Plugins
+Plugin 'wfleming/vim-codeclimate'
+" Plugin 'AndrewRadev/ember_tools.vim'
 " Plugin 'fatih/vim-go'
 " Plugin 'junegunn/goyo.vim'
 " Plugin 'ecomba/vim-ruby-refactoring'
+" Plugin 'mxw/vim-jsx'
+" Plugin 'mileszs/ack.vim'                  " search (Ack is the new Ag which was the new grep)
+Plugin 'grep.vim'                           " one search to rule them all
 Plugin 'junegunn/vim-easy-align'         " align tables in markdown
-Plugin 'mxw/vim-jsx'
 Plugin 'chrisbra/csv.vim'
 Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
 "Plugin 'pangloss/vim-javascript'        " vim polyglot optimizes plugins, try it manually?
@@ -48,7 +52,6 @@ Plugin 'jgdavey/tslime.vim'               " send things to tmux
 Plugin 'junegunn/fzf'                     " fuzzy file finder
 Plugin 'junegunn/fzf.vim'                 " vim keybindings
 Plugin 'rizzatti/dash.vim'
-Plugin 'mileszs/ack.vim'                  " search (Ack is the new Ag which was the new grep)
 Plugin 'scrooloose/nerdtree'              " file system explorer
 Plugin 'sheerun/vim-polyglot'             " language packs
 Plugin 'thoughtbot/vim-rspec'             " rspec helper
@@ -109,10 +112,6 @@ nmap <silent> ,qo :copen<CR>
 " use // to clear the search
 nmap <silent> // :nohlsearch<CR>
 
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " PLUGIN SETTINGS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -148,7 +147,7 @@ nnoremap <silent> ,F :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("
 " SEARCH SETTINGS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " " Open the Ag command and place the cursor into the quotes
-nmap <leader>gg :Ack ''<Left>
+nmap <leader>gg :Rg
 
 function! GetVisual()
   let reg_save = getreg('"')
@@ -163,9 +162,9 @@ function! GetVisual()
 endfunction
 
 "grep visual selection
-vnoremap <leader>k :<C-U>execute "Ag " . GetVisual()<CR>
+vnoremap <leader>k :<C-U>execute "Rg " . GetVisual()<CR>
 "grep the current word using ,k (mnemonic Kurrent)
-nnoremap <silent> <leader>k :Ack <cword><CR>
+nnoremap <silent> <leader>k :Rg <cword><CR>
 " let g:ack_apply_qmappings = 1
 " let g:ack_apply_lmappings = 1
 let g:ack_apply_qmappings = 0
@@ -190,7 +189,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
-let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
+let g:rspec_command = 'call Send_to_Tmux("be rspec {spec}\n")'
 " let g:rspec_command = 'call Send_to_Tmux("bin/rspec {spec}\n")'
 " ------- Sends spec to tmux window
 " RSpec.vim mappings
@@ -237,7 +236,7 @@ map <localleader>a :ALEFix<CR>
 " OPTIONS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 syntax enable
-" set background=dark
+set background=dark
 colorscheme gruvbox
 let g:lightline = {
   \ 'colorscheme': 'gruvbox',
@@ -305,9 +304,6 @@ set directory-=.            " Don't store temp files in cwd
 set encoding=utf8           " UTF-8 by default
 set expandtab               " No tabs
 set fileformats=unix,dos,mac  " Prefer Unix
-set fillchars=vert:\ ,stl:\ ,stlnc:\ ,fold:-,diff:┄
-                            " Unicode chars for diffs/folds, and rely on
-                            " Colors for window borders
 silent! set foldmethod=marker " Use braces by default
 set formatoptions=tcqn1     " t - autowrap normal text
                             " c - autowrap comments
@@ -352,7 +348,6 @@ set wildmenu                " Show possible completions on command line
 set complete=.,b,u,]        " pull from keywords in current file, buffers, & tags file
 set wildmode=list,list:longest,full " List all options and complete
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules  " Ignore certain files in tab-completion
-
 
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Custom Scripts
@@ -450,3 +445,10 @@ set gfn=Monaco:h14
 
 " Align GitHub-flavored Markdown tables
 vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
+
+" Code climate (useful for cyclomatic complexity)
+"nmap <localleader>ca :CodeClimateAnalyzeProject<CR>
+"nmap <localleader>co :CodeClimateAnalyzeOpenFiles<CR>
+nmap <localleader>cf :CodeClimateAnalyzeCurrentFile<CR>
+
+
