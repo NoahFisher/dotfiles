@@ -14,6 +14,7 @@ shopt -s cmdhist
 # Me hate to type
 alias dc='docker-compose'
 alias pumalogs='tail -f ~/Library/Logs/puma-dev.log'
+alias be='bundle exec'
 
 # Git (most common ones)
 alias ga='git add -A'
@@ -36,7 +37,7 @@ alias editssh='vim ~/.ssh/config'
 # Directories
 alias cdd='cd ~/development/'
 alias cds='cd ~/development/simplepractice'
-alias cdw='cd ~/development/simplepractice/simplepractice'
+alias cdw='cd ~/dev/cvid/ehr_web'
 alias cdf='cd ~/development/simplepractice/simplepractice/frontend'
 alias cde='cd ~/development/simplepractice/ember-simplepractice'
 alias cdfi='cd ~/development/simplepractice/financial-analytics'
