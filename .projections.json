@@ -1,0 +1,53 @@
+{
+  "frontend/app/initializers/*.js": {
+    "type": "initializer"
+  },
+  "frontend/app/models/*.js": {
+    "type": "emodel",
+    "alternate": "frontend/app/adapters/{}.js"
+  },
+  "frontend/app/adapters/*.js": {
+    "type": "adapter",
+    "alternate": "frontend/app/serializers/{}.js"
+  },
+  "frontend/app/serializers/*.js": {
+    "type": "serializer",
+    "alternate": "frontend/app/models/{}.js"
+  },
+  "frontend/app/services/*.js": {
+    "type": "service"
+  },
+  "frontend/app/routes/*.js": {
+    "type": "route",
+    "alternate": "frontend/app/templates/{}.hbs"
+  },
+  "frontend/app/controllers/*.js": {
+    "type": "controller",
+    "alternate": "frontend/app/templates/{}.hbs"
+  },
+  "frontend/app/templates/*.hbs": {
+    "type": "template",
+    "alternate": "frontend/app/routes/{}.js"
+  },
+  "frontend/app/components/*.js": {
+    "type": "component",
+    "alternate": "frontend/app/templates/components/{}.hbs"
+  },
+  "frontend/app/components/*/component.js": {
+    "type": "component",
+    "alternate": "frontend/app/components/{}/template.hbs"
+  },
+  "frontend/app/templates/components/*.hbs": {
+    "type": "ctemplate",
+    "alternate": "frontend/app/components/{}.js"
+  },
+  "app/resources/*.rb": {
+    "type": "resource"
+  },
+  "spec/acceptance/*.rb": {
+    "type": "aspec"
+  },
+  "config/initializers/sidekiq.rb": {
+    "type": "sidekiq"
+  }
+}
