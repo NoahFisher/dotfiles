@@ -63,3 +63,11 @@ $ gem install gem-ctags
 $ gem ctags
 ```
 
+
+Zsh
+---
+
+```
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+```
+
