@@ -16,6 +16,8 @@ export PATH="/usr/local/opt/node@10/bin:$PATH"
 # python
 export PATH="~/.pyenv/versions/3.5.2/bin:$PATH"
 export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
+export CPPFLAGS=-I$(brew --prefix openssl)/include
+export LDFLAGS=-L$(brew --prefix openssl)/lib
 
 # Prompt
 parse_git_branch() {
@@ -27,3 +29,16 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # Colors
 export TERM=xterm-256color
+
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init -)"
+# fi
+
+# Hombrew doctor addition
+export PATH="/usr/local/sbin:$PATH"
+
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/opt/python/libexec/bin/python
+export WORKON_HOME=~/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh

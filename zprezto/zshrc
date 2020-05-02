@@ -1,7 +1,31 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+eval "$(rbenv init -)"
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
+export PATH="/usr/local/opt/redis@4.0/bin:$PATH"
+export PATH="/usr/local/opt/node@10/bin:$PATH"
+
+# Python (commented out because it slows down new terminal windows)
+# export VIRTUALENVWRAPPER_PYTHON=/usr/local/opt/python/libexec/bin/python
+# export WORKON_HOME=~/.virtualenvs
+# source /usr/local/bin/virtualenvwrapper.sh
+
 # Tools
 # ==============================
+unalias e
 # fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # rg
 alias rg='rg --hidden' # search hidden files (.rubocop)
@@ -19,21 +43,10 @@ alias ngrok='~/development/ngrok'
 # Bundler
 alias be='bundle exec'
 
-# History file changes
-# https://www.shellhacks.com/tune-command-line-history-bash/
-# ==============================
-export HISTTIMEFORMAT="%h %d %H:%M:%S "
-export HISTSIZE=10000
-export HISTFILESIZE=10000
-export PROMPT_COMMAND='history -a'
-export HISTCONTROL=ignorespace:erasedups
-export HISTIGNORE="ls:ps:history"
-shopt -s cmdhist
-
+# puma-dev
 alias pumalogs='tail -f ~/Library/Logs/puma-dev.log'
 
-# Git (most common ones)
-# ==============================
+# git aliases
 alias ga='git add -A'
 alias gam='git commit --amend'
 alias gb='git branch -v'
@@ -46,18 +59,13 @@ alias gr1='git reset --soft HEAD~1'
 alias gr2='git reset --soft HEAD~2'
 alias gr='git rebase'
 alias gs='git status'
-# `gdmb` (g)it (d)elete (m)erged (b)ranches - Deletes all branches already merged on
-# current branch
-# FIXME: broken since squash and merge...
-alias gdmb='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 
-# aliases
-# ==============================
-alias ae='vim ~/.bashrc'
+# bash/zsh
+alias ae='vim ~/.zshrc'
 alias editssh='vim ~/.ssh/config'
 
-# Directories
-# ==============================
+# aliases
+alias cdz='cd ~/.zprezto'
 alias cdd='cd ~/development/'
 alias cds='cd ~/development/simplepractice'
 alias cdw='cd ~/development/simplepractice/simplepractice'
@@ -74,7 +82,6 @@ alias cdot='cd ~/dotfiles/'
 alias cdmnotes='cd ~/Documents/meeting-notes/'
 alias cdssh='cd ~/.ssh'
 alias cdq='cd ~/development/simplepractice/quartet'
-alias cdehr='cd ~/dev/cvid/ehr_web'
 
 # Workflow
 # ==============================
@@ -96,9 +103,6 @@ alias semaphore='function _semaphore() {
 
 # open asana on TE board (most common use case)
 alias asana='open -a "Google Chrome" https://app.asana.com/0/578533578074205/list'
-
-# Slava's update command
-alias sp_update="bundle install && yarn install && be rails db:migrate && cd frontend && yarn && cd .."
 
 # stripe testing cards:
 # Charge

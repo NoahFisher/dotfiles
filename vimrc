@@ -6,6 +6,12 @@
 "
 " Noah's .vimrc file
 "
+
+" Debugging help
+autocmd BufEnter *.js iabbr xxx console.log('xxx',
+autocmd BufEnter *.rb iabbr pry require 'pry-remote'; binding.remote_pry
+
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -18,39 +24,22 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
-" Experimental Plugins
-Plugin 'wfleming/vim-codeclimate'
-" Plugin 'AndrewRadev/ember_tools.vim'
-" Plugin 'fatih/vim-go'
-" Plugin 'junegunn/goyo.vim'
-" Plugin 'ecomba/vim-ruby-refactoring'
-" Plugin 'mxw/vim-jsx'
-" Plugin 'mileszs/ack.vim'                  " search (Ack is the new Ag which was the new grep)
-Plugin 'grep.vim'                           " one search to rule them all
-Plugin 'junegunn/vim-easy-align'         " align tables in markdown
-Plugin 'chrisbra/csv.vim'
-Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
-"Plugin 'pangloss/vim-javascript'        " vim polyglot optimizes plugins, try it manually?
-                                        " deactivating bc it's slowing things down
-                                        "
-                                        "
+Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
+Plugin 'fatih/vim-go'
 
-" Plugin 'epilande/vim-react-snippets'    " React code snippets
-" Plugin 'SirVer/ultisnips'               " this was deactivated, but trying again. Will see if it's too slow...
-" Plugin 'honza/vim-snippets'
-" Plugin 'airblade/vim-gitgutter'       " deactivating bc it's slowing things down
-"
-"
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Raimondi/delimitMate'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'morhetz/gruvbox'                  " Different color scheme
 Plugin 'austintaylor/vim-indentobject'
+Plugin 'chrisbra/csv.vim'
 Plugin 'christoomey/vim-tmux-navigator'   " Seamless navigation between tmux panes and vim splits
+Plugin 'dense-analysis/ale'               " linting
+Plugin 'grep.vim'                         " one search to rule them all
 Plugin 'itchyny/lightline.vim'
 Plugin 'jgdavey/tslime.vim'               " send things to tmux
 Plugin 'junegunn/fzf'                     " fuzzy file finder
 Plugin 'junegunn/fzf.vim'                 " vim keybindings
+Plugin 'junegunn/vim-easy-align'         " align tables in markdown
+Plugin 'morhetz/gruvbox'                  " Different color scheme
 Plugin 'rizzatti/dash.vim'
 Plugin 'scrooloose/nerdtree'              " file system explorer
 Plugin 'sheerun/vim-polyglot'             " language packs
@@ -61,8 +50,7 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
-" Plugin 'tpope/vim-pathogen'             " Unused?
-Plugin 'tpope/vim-projectionist'
+Plugin 'tpope/vim-projectionist'          " add .projectionist.json file for mapping heaven
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-rbenv'
@@ -71,7 +59,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'             " Pairs of handy bracket mappings
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/YankRing.vim'         " copy pasta
-Plugin 'dense-analysis/ale'               " linting
+Plugin 'wfleming/vim-codeclimate'
+Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -136,10 +125,6 @@ nnoremap ,cc :Econtroller<cr>
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
 
-" " hit ,f to find the definition of the current class
-" " this uses ctags. the standard way to get this is Ctrl-]
-" nnoremap <silent> ,f <C-]>
-
 " " use ,F to jump to tag in a vertical split
 nnoremap <silent> ,F :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("tag ". word)<cr>
 
@@ -147,8 +132,7 @@ nnoremap <silent> ,F :let word=expand("<cword>")<CR>:vsp<CR>:wincmd w<cr>:exec("
 " SEARCH SETTINGS
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 " " Open the Ag command and place the cursor into the quotes
-nmap <leader>gg :Rg
-
+nmap <leader>gg :Rg 
 function! GetVisual()
   let reg_save = getreg('"')
   let regtype_save = getregtype('"')
@@ -224,6 +208,11 @@ augroup END
 
 let g:ale_ruby_rubocop_options="--display-cop-names --rails"
 " use :ALEFix to run a fixer on a file
+let g:ale_linters = {
+\   'ruby': ['rubocop'],
+\   'javascript': ['eslint'],
+\   'html.handlebars': ['prettier'],
+\}
 let g:ale_fixers = {
 \   'ruby': ['rubocop'],
 \   'javascript': ['eslint'],
@@ -240,10 +229,10 @@ set background=dark
 colorscheme gruvbox
 let g:lightline = {
   \ 'colorscheme': 'gruvbox',
-  \ 'tab_component_function': {
-  \   'filename': 'MyTabFilename',
-  \ },
 \}
+  " \ 'tab_component_function': {
+  " \   'filename': 'MyTabFilename',
+  " \ },
 
 function! s:lightline_update()
   if !exists('g:loaded_lightline')
@@ -260,34 +249,35 @@ function! s:lightline_update()
   endtry
 endfunction
 
-function! MyTabFilename(n)
-  let buflist = tabpagebuflist(a:n)
-  let winnr = tabpagewinnr(a:n)
-  let bufnum = buflist[winnr - 1]
-  let bufname = expand('#'.bufnum.':t')
-  let buffullname = expand('#'.bufnum.':p')
-  let buffullnames = []
-  let bufnames = []
-  for i in range(1, tabpagenr('$'))
-    if i != a:n
-      let num = tabpagebuflist(i)[tabpagewinnr(i) - 1]
-      call add(buffullnames, expand('#' . num . ':p'))
-      call add(bufnames, expand('#' . num . ':t'))
-    endif
-  endfor
-  let i = index(bufnames, bufname)
-  if strlen(bufname) && i >= 0 && buffullnames[i] != buffullname
-    return substitute(buffullname, '.*/\([^/]\+/\)', '\1', '')
-  else
-    return strlen(bufname) ? bufname : '[No Name]'
-  endif
-endfunction
+" function! MyTabFilename(n)
+"   let buflist = tabpagebuflist(a:n)
+"   let winnr = tabpagewinnr(a:n)
+"   let bufnum = buflist[winnr - 1]
+"   let bufname = expand('#'.bufnum.':t')
+"   let buffullname = expand('#'.bufnum.':p')
+"   let buffullnames = []
+"   let bufnames = []
+"   for i in range(1, tabpagenr('$'))
+"     if i != a:n
+"       let num = tabpagebuflist(i)[tabpagewinnr(i) - 1]
+"       call add(buffullnames, expand('#' . num . ':p'))
+"       call add(bufnames, expand('#' . num . ':t'))
+"     endif
+"   endfor
+"   let i = index(bufnames, bufname)
+"   if strlen(bufname) && i >= 0 && buffullnames[i] != buffullname
+"     return substitute(buffullname, '.*/\([^/]\+/\)', '\1', '')
+"   else
+"     return strlen(bufname) ? bufname : '[No Name]'
+"   endif
+" endfunction
+
 " Show full path for filename
 function! FilenameForLightline()
   return expand('%')
 endfunction
 
-" https://github.com/itchyny/lightline.vim
+" " https://github.com/itchyny/lightline.vim
 if !has('gui_running')
   set t_Co=256
 endif
@@ -347,7 +337,7 @@ set notitle                 " Don't set the title of the Vim window
 set wildmenu                " Show possible completions on command line
 set complete=.,b,u,]        " pull from keywords in current file, buffers, & tags file
 set wildmode=list,list:longest,full " List all options and complete
-set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules  " Ignore certain files in tab-completion
+set wildignore=*.class,*.o,*.pyc,.git,node_modules  " Ignore certain files in tab-completion
 
 " - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -
 " Custom Scripts
@@ -447,8 +437,7 @@ set gfn=Monaco:h14
 vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
 " Code climate (useful for cyclomatic complexity)
-"nmap <localleader>ca :CodeClimateAnalyzeProject<CR>
-"nmap <localleader>co :CodeClimateAnalyzeOpenFiles<CR>
-nmap <localleader>cf :CodeClimateAnalyzeCurrentFile<CR>
-
+" nmap <localleader>ca :CodeClimateAnalyzeProject<CR>
+" nmap <localleader>co :CodeClimateAnalyzeOpenFiles<CR>
+" nmap <localleader>cf :CodeClimateAnalyzeCurrentFile<CR>
 
