@@ -26,6 +26,7 @@ Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Plugin 'fatih/vim-go'
 
+Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'austintaylor/vim-indentobject'
@@ -61,7 +62,6 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/YankRing.vim'         " copy pasta
 Plugin 'wfleming/vim-codeclimate'
 Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
-Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -209,6 +209,11 @@ augroup END
 
 let g:ale_ruby_rubocop_options="--display-cop-names --rails"
 " use :ALEFix to run a fixer on a file
+let g:ale_linters = {
+\   'ruby': ['rubocop'],
+\   'javascript': ['eslint'],
+\   'html.handlebars': ['prettier'],
+\}
 let g:ale_fixers = {
 \   'ruby': ['rubocop'],
 \   'javascript': ['eslint'],
