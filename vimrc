@@ -24,7 +24,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
-Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
 Plugin 'fatih/vim-go'
 
 Plugin 'AndrewRadev/splitjoin.vim'
@@ -50,6 +49,7 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-rhubarb'
 Plugin 'tpope/vim-projectionist'          " add .projectionist.json file for mapping heaven
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
@@ -61,6 +61,7 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/YankRing.vim'         " copy pasta
 Plugin 'wfleming/vim-codeclimate'
 Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
+Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -208,11 +209,6 @@ augroup END
 
 let g:ale_ruby_rubocop_options="--display-cop-names --rails"
 " use :ALEFix to run a fixer on a file
-let g:ale_linters = {
-\   'ruby': ['rubocop'],
-\   'javascript': ['eslint'],
-\   'html.handlebars': ['prettier'],
-\}
 let g:ale_fixers = {
 \   'ruby': ['rubocop'],
 \   'javascript': ['eslint'],
@@ -248,29 +244,6 @@ function! s:lightline_update()
   catch
   endtry
 endfunction
-
-" function! MyTabFilename(n)
-"   let buflist = tabpagebuflist(a:n)
-"   let winnr = tabpagewinnr(a:n)
-"   let bufnum = buflist[winnr - 1]
-"   let bufname = expand('#'.bufnum.':t')
-"   let buffullname = expand('#'.bufnum.':p')
-"   let buffullnames = []
-"   let bufnames = []
-"   for i in range(1, tabpagenr('$'))
-"     if i != a:n
-"       let num = tabpagebuflist(i)[tabpagewinnr(i) - 1]
-"       call add(buffullnames, expand('#' . num . ':p'))
-"       call add(bufnames, expand('#' . num . ':t'))
-"     endif
-"   endfor
-"   let i = index(bufnames, bufname)
-"   if strlen(bufname) && i >= 0 && buffullnames[i] != buffullname
-"     return substitute(buffullname, '.*/\([^/]\+/\)', '\1', '')
-"   else
-"     return strlen(bufname) ? bufname : '[No Name]'
-"   endif
-" endfunction
 
 " Show full path for filename
 function! FilenameForLightline()
@@ -441,3 +414,19 @@ vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 " nmap <localleader>co :CodeClimateAnalyzeOpenFiles<CR>
 " nmap <localleader>cf :CodeClimateAnalyzeCurrentFile<CR>
 
+function! OpenPR(sha)
+  let pr_number = system("git log --merges --ancestry-path --oneline ". a:sha . "..staging | grep 'pull request' | tail -n1 | awk '{print $5}' | cut -c2-")
+  let remote = fugitive#RemoteUrl(".")
+  let root = rhubarb#homepage_for_url(remote)
+  let url = root . '/pull/' . substitute(pr_number, '\v\C\n', '', 1)
+  call netrw#BrowseX(url, 0)
+endfunction
+
+augroup fugitive_ext
+  autocmd!
+  " Browse to the commit under my cursor
+  autocmd FileType fugitiveblame nnoremap <buffer> <localleader>gb :execute ":Gbrowse " . expand("<cword>")<cr>
+
+  " Browse to the PR for commit under my cursor
+  autocmd FileType fugitiveblame nnoremap <buffer> <localleader>pr :call OpenPR(expand("<cword>"))<cr>
+augroup END
