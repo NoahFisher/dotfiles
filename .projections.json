@@ -2,6 +2,9 @@
     "app/resources/*.rb": {
         "type": "resource"
     },
+    "app/presenters/*.rb": {
+        "type": "presenter"
+    },
     "config/initializers/sidekiq.rb": {
         "type": "sidekiq"
     },

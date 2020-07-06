@@ -63,7 +63,6 @@ $ gem install gem-ctags
 $ gem ctags
 ```
 
-
 Zsh
 ---
 
