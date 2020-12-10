@@ -24,7 +24,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
-Plugin 'fatih/vim-go'
+" Plugin 'fatih/vim-go'
 
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Raimondi/delimitMate'
@@ -50,7 +50,7 @@ Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
-Plugin 'tpope/vim-projectionist'          " add .projectionist.json file for mapping heaven
+" Plugin 'tpope/vim-projectionist'          " add .projectionist.json file for mapping heaven
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-rbenv'
@@ -393,7 +393,7 @@ function! OpenChangedFiles()
     for filename in filenames[1:]
       exec "sp " . filename
     endfor
-  end
+  endif
 endfunction
 command! OpenChangedFiles :call OpenChangedFiles()
 
