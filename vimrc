@@ -149,7 +149,7 @@ endfunction
 "grep visual selection
 vnoremap <leader>k :<C-U>execute "Rg " . GetVisual()<CR>
 "grep the current word using ,k (mnemonic Kurrent)
-nnoremap <silent> <leader>k :Rg <cword><CR>
+nnoremap <silent> <leader>k :Rg expand("<cword>")<CR>
 " let g:ack_apply_qmappings = 1
 " let g:ack_apply_lmappings = 1
 let g:ack_apply_qmappings = 0
@@ -157,6 +157,7 @@ let g:ack_apply_lmappings = 0
 
 " hashmap
 imap <c-L> <space>=><space>
+imap jj <Esc>
 
 " Open the project tree and expose current file in the nerdtree with Ctrl-\ calls NERDTreeFind iff
 " NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
@@ -174,7 +175,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
-let g:rspec_command = 'call Send_to_Tmux("be rspec {spec}\n")'
+let g:rspec_command = 'call Send_to_Tmux("bin/rspec {spec}\n")'
 " let g:rspec_command = 'call Send_to_Tmux("bin/rspec {spec}\n")'
 " ------- Sends spec to tmux window
 " RSpec.vim mappings
@@ -218,6 +219,7 @@ let g:ale_fixers = {
 \   'ruby': ['rubocop'],
 \   'javascript': ['eslint'],
 \   'html.handlebars': ['prettier'],
+\   'sql': ['pgformatter'],
 \}
 
 map <localleader>a :ALEFix<CR>
@@ -414,16 +416,17 @@ set gfn=Monaco:h14
 " Align GitHub-flavored Markdown tables
 vmap <Leader><Bslash> :EasyAlign*<Bar><Enter>
 
-" Code climate (useful for cyclomatic complexity)
-" nmap <localleader>ca :CodeClimateAnalyzeProject<CR>
-" nmap <localleader>co :CodeClimateAnalyzeOpenFiles<CR>
-" nmap <localleader>cf :CodeClimateAnalyzeCurrentFile<CR>
-
 function! OpenPR(sha)
   let pr_number = system("git log --merges --ancestry-path --oneline ". a:sha . "..staging | grep 'pull request' | tail -n1 | awk '{print $5}' | cut -c2-")
   let remote = fugitive#RemoteUrl(".")
   let root = rhubarb#homepage_for_url(remote)
   let url = root . '/pull/' . substitute(pr_number, '\v\C\n', '', 1)
+  call netrw#BrowseX(url, 0)
+endfunction
+
+function! OpenPivotalStory(sha)
+  let pivotal_story_id = system("git show -q --oneline ". a:sha ." | tail -n1 | awk '{print $2}' | sed 's/[^0-9]*//g'")
+  let url = 'https://www.pivotaltracker.com/story/show/' . substitute(pivotal_story_id, '\v\C\n', '', 1)
   call netrw#BrowseX(url, 0)
 endfunction
 
@@ -434,4 +437,27 @@ augroup fugitive_ext
 
   " Browse to the PR for commit under my cursor
   autocmd FileType fugitiveblame nnoremap <buffer> <localleader>pr :call OpenPR(expand("<cword>"))<cr>
+
+  " Browse to the Pivotal story for this sha (assumes properly formatted commit messages)
+  autocmd FileType fugitiveblame nnoremap <buffer> <localleader>gpv :call OpenPivotalStory(expand("<cword>"))<cr>
 augroup END
+
+" Synopsis:
+"   Extracts into an Rspec let declaration
+"   Special thanks to ReinH (#vim room at irc.freenode.net)
+function! ExtractIntoRspecLet()
+  normal 0
+  if empty(matchstr(getline("."), "=")) == 1
+    echo "Can't find an assignment"
+    return
+  end
+  normal! dd
+  exec "?^\\s*\\<\\(describe\\|context\\)\\>"
+  normal! $p
+  exec 's/\v([a-z_][a-zA-Z0-9_]*) \= (.+)/let(:\1) { \2 }'
+  normal V=
+
+endfunction
+command! RExtractLet call ExtractIntoRspecLet()
+nnoremap <leader>rel :ERExtractLet<cr>
+nnoremap <leader>rel :RExtractLet<cr>

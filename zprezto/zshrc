@@ -63,6 +63,7 @@ alias gs='git status'
 
 # bash/zsh
 alias ae='vim ~/.zshrc'
+alias ve='vim ~/.vimrc'
 alias editssh='vim ~/.ssh/config'
 
 # aliases
