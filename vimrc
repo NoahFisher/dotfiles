@@ -26,6 +26,7 @@ Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 Plugin 'fatih/vim-go'
 
+Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'austintaylor/vim-indentobject'
@@ -37,12 +38,12 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'jgdavey/tslime.vim'               " send things to tmux
 Plugin 'junegunn/fzf'                     " fuzzy file finder
 Plugin 'junegunn/fzf.vim'                 " vim keybindings
-Plugin 'junegunn/vim-easy-align'         " align tables in markdown
+Plugin 'junegunn/vim-easy-align'          " align tables in markdown
 Plugin 'morhetz/gruvbox'                  " Different color scheme
 Plugin 'rizzatti/dash.vim'
 Plugin 'scrooloose/nerdtree'              " file system explorer
 Plugin 'sheerun/vim-polyglot'             " language packs
-Plugin 'thoughtbot/vim-rspec'             " rspec helper
+Plugin 'janko-m/vim-test'                 " test helper
 Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-commentary'
@@ -61,7 +62,6 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/YankRing.vim'         " copy pasta
 Plugin 'wfleming/vim-codeclimate'
 Plugin 'yssl/QFEnter'                    " Better quickfix window bindings
-Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -113,6 +113,9 @@ let maplocalleader = "\\"
 set rtp+=/home/dev/.linuxbrew/opt/fzf/install
 set rtp+=~/.fzf
 
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
+
 nmap <Leader>a :Files<CR>
 nmap <Leader>b :Buffers<CR>
 nmap <Leader>s :Tags<CR>
@@ -157,6 +160,7 @@ let g:ack_apply_lmappings = 0
 
 " hashmap
 imap <c-L> <space>=><space>
+imap jj <Esc>
 
 " Open the project tree and expose current file in the nerdtree with Ctrl-\ calls NERDTreeFind iff
 " NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
@@ -174,19 +178,36 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
-let g:rspec_command = 'call Send_to_Tmux("be rspec {spec}\n")'
-" let g:rspec_command = 'call Send_to_Tmux("bin/rspec {spec}\n")'
+" let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
+let test#ruby#use_binstubs = 0
 " ------- Sends spec to tmux window
+
+function! DockerTransform(cmd) abort
+  " return test command wrapped in docker stuff
+  return 'docker-compose run --rm -e CHROME_HEADLESS=true app '.a:cmd
+endfunction
+
+let g:test#custom_transformations = {'docker': function('DockerTransform')}
+let g:test#transformation = 'docker'
+let test#ruby#rspec#executable = 'bundle exec rspec'
+" HACK: tests that start with test_*_spec.rb are getting picked up by Minitest's runner
+" instead of rspec
+let test#ruby#minitest#file_pattern = '_zzzzzz\.rb'
+
+
+
 " RSpec.vim mappings
-let g:rspec_runner = "os_x_iterm2"
-" Run spec (file)
-map ,rs :call RunCurrentSpecFile()<CR>
-" Run line
-map ,rl :call RunNearestSpec()<CR>
-" Run previous
-map ,rp :call RunLastSpec()<CR>
-" Run all
-map ,ra :call RunAllSpecs()<CR>
+" let g:rspec_runner = "os_x_iterm2"
+let test#strategy = "tslime"
+let g:tslime_always_current_session = 1
+let g:tslime_always_current_window = 1
+
+nnoremap <silent> <Leader>rs :TestFile<CR>
+nnoremap <silent> <Leader>rl :TestNearest<CR>
+nnoremap <silent> <Leader>rp :TestLast<CR>
+nnoremap <silent> <Leader>ra :TestSuite<CR>
+nnoremap <silent> <leader>rtv :TestVisit<CR>
+
 " Reset Tmux Vars (for sending to another session/window)
 nmap ,rr <Plug>SetTmuxVars
 " Send visual selection to tmux
@@ -255,7 +276,7 @@ if !has('gui_running')
   set t_Co=256
 endif
 
-set clipboard=unnamed       " Use system keyboard
+set clipboard=unnamed       " System keyboard on linux
 set autoindent              " Carry over indenting from previous line
 set autoread                " Don't bother me when a file changes
 set backspace=indent,eol,start
