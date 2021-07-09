@@ -161,6 +161,7 @@ let g:ack_apply_lmappings = 0
 " hashmap
 imap <c-L> <space>=><space>
 imap jj <Esc>
+imap kk <Esc>
 
 " Open the project tree and expose current file in the nerdtree with Ctrl-\ calls NERDTreeFind iff
 " NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
