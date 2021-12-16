@@ -25,6 +25,8 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'             " manage dependencies
 
 " Plugin 'fatih/vim-go'
+Plugin 'valloric/youcompleteme'
+" Plugin 'codota/tabnine-vim'
 
 Plugin 'AndrewRadev/ember_tools.vim'      " Try out ember tools
 Plugin 'AndrewRadev/splitjoin.vim'
@@ -51,7 +53,7 @@ Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rhubarb'
-" Plugin 'tpope/vim-projectionist'          " add .projectionist.json file for mapping heaven
+Plugin 'tpope/vim-projectionist'          " add .projectionist.json file for mapping heaven
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 Plugin 'tpope/vim-rbenv'
@@ -149,11 +151,14 @@ endfunction
 "grep visual selection
 vnoremap <leader>k :<C-U>execute "Rg " . GetVisual()<CR>
 "grep the current word using ,k (mnemonic Kurrent)
-nnoremap <silent> <leader>k :Rg expand("<cword>")<CR>
+nnoremap <silent> <leader>k :Rg <C-R><C-W><CR>
 " let g:ack_apply_qmappings = 1
 " let g:ack_apply_lmappings = 1
 let g:ack_apply_qmappings = 0
 let g:ack_apply_lmappings = 0
+
+" YCM settings
+let g:ycm_auto_hover=''
 
 " hashmap
 imap <c-L> <space>=><space>
@@ -175,7 +180,7 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let g:NERDTreeWinSize = 30
 
-let g:rspec_command = 'call Send_to_Tmux("bin/rspec {spec}\n")'
+let g:rspec_command = 'call Send_to_Tmux("CHROME_HEADLESS=true bin/rspec {spec}\n")'
 " let g:rspec_command = 'call Send_to_Tmux("bin/rspec {spec}\n")'
 " ------- Sends spec to tmux window
 " RSpec.vim mappings
@@ -211,7 +216,7 @@ augroup END
 let g:ale_ruby_rubocop_options="--display-cop-names --rails"
 " use :ALEFix to run a fixer on a file
 let g:ale_linters = {
-\   'ruby': ['rubocop'],
+\   'ruby': ['rails_best_practices', 'reek', 'rubocop', 'ruby', 'solargraph', 'sorbet', 'standardrb'],
 \   'javascript': ['eslint'],
 \   'html.handlebars': ['prettier'],
 \}

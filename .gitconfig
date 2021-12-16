@@ -5,6 +5,7 @@
   br = branch
   hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
   l = log --pretty=format:\"%Cgreen%h%Creset | %cr %cn %Cgreen%s%Creset\"
+  recent = branch --sort=committerdate --format="%(committerdate:relative)%09%(refname:short)"
 
 [filter "lfs"]
   process = git-lfs filter-process
@@ -18,3 +19,7 @@
   templatedir = ~/.git_template
 [core]
 	excludesfile = /Users/noah/.gitignore_global
+[commit]
+	gpgsign = true
+[credential]
+	helper = osxkeychain

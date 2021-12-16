@@ -82,16 +82,16 @@ alias cdehr='cd ~/dev/cvid/ehr_web'
 alias pivotal='function _pivotal() {
   if [ -z "$1" ]
     then
-      open -a "Brave Browser" https://www.pivotaltracker.com/n/projects/281125
+      open -a "Google Chrome" https://www.pivotaltracker.com/n/projects/281125
     else
-      open -a "Brave Browser" https://www.pivotaltracker.com/n/projects/281125/stories/$1
+      open -a "Google Chrome" https://www.pivotaltracker.com/n/projects/281125/stories/$1
   fi
 };_pivotal'
 # open semaphore for the current branch (only works on main web repo)
 alias semaphore='function _semaphore() {
   local branch="$(git symbolic-ref --short -q HEAD | tr / -)"
   echo "${branch}"
-  open -a "Brave Browser" "https://simplepractice.semaphoreci.com/projects/simplepractice/branches"
+  open -a "Google Chrome" "https://simplepractice.semaphoreci.com/projects/simplepractice/branches"
 };_semaphore'
 
 # open asana on TE board (most common use case)

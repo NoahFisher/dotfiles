@@ -20,20 +20,12 @@
     "alternate": "frontend/app/components/{}/template.hbs",
     "type": "component"
   },
-  "frontend/app/controllers/*.js": {
-    "alternate": "frontend/app/templates/{}.hbs",
-    "type": "controller"
-  },
   "frontend/app/initializers/*.js": {
     "type": "initializer"
   },
   "frontend/app/models/*.js": {
     "alternate": "frontend/app/adapters/{}.js",
     "type": "emodel"
-  },
-  "frontend/app/routes/*.js": {
-    "alternate": "frontend/app/templates/{}.hbs",
-    "type": "route"
   },
   "frontend/app/serializers/*.js": {
     "alternate": "frontend/app/models/{}.js",
@@ -42,9 +34,17 @@
   "frontend/app/services/*.js": {
     "type": "service"
   },
+  "frontend/app/routes/*.js": {
+    "alternate": ["frontend/app/templates/{}.hbs", "frontend/app/controllers/{}.js"],
+    "type": "route"
+  },
   "frontend/app/templates/*.hbs": {
-    "alternate": "frontend/app/routes/{}.js",
+    "alternate": ["frontend/app/controllers/{}.js", "frontend/app/routes/{}.js"],
     "type": "template"
+  },
+  "frontend/app/controllers/*.js": {
+    "alternate": "frontend/app/templates/{}.hbs",
+    "type": "controller"
   },
   "frontend/app/templates/components/*.hbs": {
     "alternate": "frontend/app/components/{}.js",

@@ -21,6 +21,11 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
 ```
 
+# Github
+
+[Cache credentials](https://docs.github.com/en/github/using-git/caching-your-github-credentials-in-git)
+[Generate token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
+
 Some things to get tmux and macosx working nicely together:
 http://blog.firstiwaslike.com/working-with-the-macos-system-clipboard-in-vim-inside-tmux/
 
